@@ -1,4 +1,5 @@
 import { FaTimes } from 'react-icons/fa'
+import ListItemText from '@material-ui/core/ListItemText';
 
 const Task = ({ key, task, onDelete, onToggle }) => {
     return (

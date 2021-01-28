@@ -1,16 +1,22 @@
-import React from 'react'
-import Button from './Button'
-import { useLocation } from 'react-router-dom'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import NoteIcon from '@material-ui/icons/Note';
+import React from 'react';
 
-const Header = ({ title, showAdd, onAdd }) => {
-
-    const location = useLocation()
+const Header = ({ title, headerIcon }) => {
 
     return (
-        <header className='header'>
-            <h1>{title}</h1>
-            {location.pathname === '/' && <Button color={showAdd ? 'red' : 'green'} text={showAdd ? 'Close' : 'Add'} onClick={onAdd} />}
-        </header>
+
+        <AppBar position="relative">
+            <Toolbar>
+                <NoteIcon className={headerIcon} />
+                <Typography variant="h6" color="inherit" noWrap>
+                    {title}
+                </Typography>
+            </Toolbar>
+        </AppBar>
+
     )
 }
 

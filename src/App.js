@@ -3,11 +3,33 @@ import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 import Footer from './components/Footer'
 import About from './components/About'
+import CustomButton from './components/Button'
+
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
+// import AppBar from '@material-ui/core/AppBar';
+// import Toolbar from '@material-ui/core/Toolbar';
+// import CameraIcon from '@material-ui/icons/PhotoCamera';
+// import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { useLocation } from 'react-router-dom'
 
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(2),
+  },
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+}));
+
 function App() {
+  const classes = useStyles();
 
   const [showAddTask, setShowAddTask] = useState(false)
 
@@ -75,22 +97,37 @@ function App() {
     setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: data.reminder } : task))
   }
 
+  const swithcVisibilityAddForm = () => (
+    setShowAddTask(!showAddTask)
+  )
+
   return (
     <BrowserRouter>
-      <div className="container">
-        <Header title="Task Tracker" onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+      <CssBaseline />
+      <Header title="Task Tracker" />
 
-        <Route path='/' exact render={(props) => (
-          <>
-            {showAddTask && <AddTask onAdd={addTask} />}
-            {
-              tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'
-            }
-          </>
-        )} />
-        <Route path='/about' component={About} />
-        <Footer />
-      </div>
+      <main>
+        <Container className={classes.container} maxWidth="sm">
+
+          <Route path='/' exact render={(props) => (
+            <>
+              <CustomButton
+                color={showAddTask ? 'secondary' : 'primary'}
+                text={showAddTask ? 'Close' : 'Add new task'}
+                onClick={swithcVisibilityAddForm}
+                variant="contained" />
+
+              {showAddTask && <AddTask onAdd={addTask} />}
+              {
+                tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No tasks to show'
+              }
+              <p><i>Hint: Double click on a specific task to "highlight" it</i></p>
+            </>
+          )} />
+          <Route path='/about' component={About} />
+          <Footer />
+        </Container>
+      </main>
     </BrowserRouter>
   );
 }
